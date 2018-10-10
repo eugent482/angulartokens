@@ -1,0 +1,13 @@
+<nav class="navbar bg-dark navbar-dark">
+    <a class="navbar-brand" routerLink="/">
+      
+      Bootstrap
+    </a>
+    <ul class="nav navbar-nav navbar-left">
+        <li><a routerLink="/secret"><span class="glyphicon glyphicon-user"></span>Secret info</a></li>
+      </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li *ngIf="!authenticationService.iauthorised()"><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+      <li *ngIf="authenticationService.iauthorised()"><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
+    </ul>
+  </nav>
