@@ -14,7 +14,6 @@ import { HomeComponent } from './Components/home/home.component';
 
 import { AuthGuard } from './Services/auth.guard';
 import { JwtInterceptor  } from './Services/jwt-interceptor.service';
-import { ErrorInterceptor } from './Services/error.interceptor.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
@@ -49,7 +48,7 @@ const appRoutes: Routes =[
   ],
   providers: [AuthorizationService, AuthGuard,  
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
+    ],
   bootstrap: [AppComponent],
   entryComponents: [SignUpComponent]
 })

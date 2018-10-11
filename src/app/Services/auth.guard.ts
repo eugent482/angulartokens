@@ -7,17 +7,17 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (localStorage.getItem('appAccess')) {
+        if (localStorage.getItem('currentUser')) {
             // logged in so return true
-            const helper = new JwtHelperService();
-            const expirationDate = helper.getTokenExpirationDate(localStorage.getItem('appAccess'));
+            // const helper = new JwtHelperService();
+            // const expirationDate = helper.getTokenExpirationDate(localStorage.getItem('currentUser.access_token'));
 
-            const current_time = new Date();
-            console.log(expirationDate+ " " + current_time)
-            if (current_time > expirationDate) {                
-                this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
-                return false;
-              }
+            // const current_time = new Date();
+            // console.log(expirationDate+ " " + current_time)
+            // if (current_time > expirationDate) {                
+            //     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
+            //     return false;
+            //   }
             return true;
         }
 
