@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthorizationService } from '../../../Services/authorization.service';
-
+import { AlertService } from '../../../Services/alert.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -19,7 +19,8 @@ export class SignInComponent implements OnInit {
     constructor(private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private authenticationService: AuthorizationService) { }
+      private authenticationService: AuthorizationService,
+      private alertService: AlertService) { }
   
 
 
@@ -53,7 +54,7 @@ export class SignInComponent implements OnInit {
                 this.router.navigate([this.returnUrl]);
             },
             error => {
-                //this.alertService.error(error);
+                this.alertService.error(error);
                 this.loading = false;
             });
 }
