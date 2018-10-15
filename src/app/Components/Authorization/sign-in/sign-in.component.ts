@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AuthorizationService } from '../../../Services/authorization.service';
+import {Subscription} from 'rxjs';
+import { AuthenticationService } from '../../../Services/authentication.service';
 import { AlertService } from '../../../Services/alert.service';
 @Component({
   selector: 'app-sign-in',
@@ -15,33 +16,32 @@ export class SignInComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
+    private subscription: Subscription;
 
     constructor(private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private authenticationService: AuthorizationService,
+      private authenticationService: AuthenticationService,
       private alertService: AlertService) { }
   
 
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-  });
+        username: ['', Validators.required],
+        password: ['', Validators.required]
+    });
+    this.authenticationService.logout();
 
-  // reset login status
-  this.authenticationService.logout();
-
-  // get return url from route parameters or default to '/'
-  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    
   }
 
   get f() { return this.loginForm.controls; }
+
   onSubmit() {
     this.submitted = true;
-
-    // stop here if form is invalid
+    
     if (this.loginForm.invalid) {
         return;
     }

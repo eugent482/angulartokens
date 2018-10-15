@@ -1,34 +1,38 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaderResponse, HttpSentEvent, HttpProgressEvent, HttpResponse, HttpUserEvent} from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError} from 'rxjs';
-import { AuthorizationService } from '../Services/authorization.service';
+import { AuthenticationService } from '../Services/authentication.service';
 import { catchError, switchMap, filter, take, finalize } from 'rxjs/operators'
 import { ICurrentUser } from '../Components/CurrentUser'
 @Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthorizationService) {}
-    intercept(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any> | any> {
+export class InterceptorService implements HttpInterceptor {
 
+    constructor(private authenticationService: AuthenticationService) {}
+
+    // method for interception all requests
+    intercept(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any> | any> {
         return next.handle(this.addTokenToRequest(request, this.authenticationService.getAuthToken()))
          .pipe(catchError(err => {
             if (err.status === 401) {              
                 return this.handle401Error(request, next);               
             }
-            
-            const error = err.error.message || err.statusText;
-           
+
+            // we can show this error in alert services. 
+            const error = err.error.message || err.statusText;           
             return throwError(error);
         }))
     }
 
-
-private addTokenToRequest(request: HttpRequest<any>, token: string) : HttpRequest<any> {
+    //set an access token in a request header
+    private addTokenToRequest(request: HttpRequest<any>, token: string) : HttpRequest<any> {
             return request.clone({ setHeaders: { Authorization: `Bearer ${token}`}});
-        }
+    }
 
     isRefreshingToken: boolean = false;
     tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-     private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+
+    // if we get 401 error send a refresh token to renew an access
+    private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
 
             if(!this.isRefreshingToken) {
                 this.isRefreshingToken = true;

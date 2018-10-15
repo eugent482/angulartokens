@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import {User} from '../../user'
-import { AuthorizationService } from '../../Services/authorization.service';
+import { AuthenticationService } from '../../Services/authentication.service';
 
 @Component({
   selector: 'app-secret',
@@ -10,7 +10,7 @@ import { AuthorizationService } from '../../Services/authorization.service';
 })
 export class SecretComponent implements OnInit {
 
-  constructor(private http: HttpClient,private authenticationService: AuthorizationService) { }
+  constructor(private http: HttpClient,private authenticationService: AuthenticationService) { }
 
   users: User[];
   ngOnInit() {

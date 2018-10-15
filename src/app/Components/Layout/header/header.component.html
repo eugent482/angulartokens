@@ -6,8 +6,12 @@
     <ul class="nav navbar-nav navbar-left">
         <li><a routerLink="/secret"><span class="glyphicon glyphicon-user"></span>Secret info</a></li>
       </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li *ngIf="!authenticationService.iauthorised()"><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
-      <li *ngIf="authenticationService.iauthorised()"><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
+    <ul class="nav navbar-nav navbar-right">      
+      <li *ngIf="!authenticationService.isauthorised()"><a routerLink=""><span class="glyphicon glyphicon-log-in"></span>Sign up</a></li>
+      <li *ngIf="authenticationService.isauthorised()"><a routerLink=""><span class="glyphicon glyphicon-log-in"></span>{{profile}}</a></li>
+    </ul>
+      <ul class="nav navbar-nav navbar-right">    
+      <li *ngIf="!authenticationService.isauthorised()"><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span>Sign in</a></li>      
+      <li *ngIf="authenticationService.isauthorised()"><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
     </ul>
   </nav>

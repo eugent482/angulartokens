@@ -9,19 +9,19 @@ import { SignInComponent } from './Components/Authorization/sign-in/sign-in.comp
 import { HeaderComponent } from './Components/Layout/header/header.component';
 import { FooterComponent } from './Components/Layout/footer/footer.component';
 import { MaterialModule } from './Modules/material/material.module';
-import { AuthorizationService } from './Services/authorization.service';
+import { AuthenticationService } from './Services/authentication.service';
 import { HomeComponent } from './Components/home/home.component';
 
 import { AuthGuard } from './Services/auth.guard';
 import { AlertService } from './Services/alert.service';
-import { JwtInterceptor,  } from './Services/jwt-interceptor.service';
-import { ErrorInterceptor,  } from './Services/error-interceptor.service';
+import { InterceptorService  } from './Services/interceptor.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 import {Routes, RouterModule} from '@angular/router';
 import { SecretComponent } from './Components/secret/secret.component';
 import { AlertComponent } from './Components/alert/alert.component';
+
 const appRoutes: Routes =[
   { path: '', component: HomeComponent},
   { path: 'login', component: SignInComponent},
@@ -50,9 +50,8 @@ const appRoutes: Routes =[
     RouterModule.forRoot(appRoutes),
     HttpClientModule
   ],
-  providers: [AuthorizationService, AuthGuard,  AlertService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  providers: [AuthenticationService, AuthGuard,  AlertService,    
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
     ],
   bootstrap: [AppComponent],
   entryComponents: [SignUpComponent]
